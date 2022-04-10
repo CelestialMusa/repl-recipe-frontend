@@ -1,0 +1,22 @@
+.recipe-banner, .recipe-image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+    position: relative;
+}
+
+.recipe-banner {
+    border-bottom: 5px solid #800035;
+}
+
+.recipe-placeholder-image{
+    display: block;
+    height: 195px;
+    background: url('../../../assets/img/dotted-overlay.png') center repeat;
+    position: relative;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    top: 0;
+}

@@ -1,0 +1,14 @@
+<div class="col-12 d-flex justify-content-center">
+    <mat-form-field class="col-11 mt-2">
+        <mat-label>Recipe search</mat-label>
+        <input matInput placeholder="Type first three letters of recipe" [formControl]="searchInput"/>
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+</div>
+
+<mat-selection-list [multiple]="false">
+    <mat-list-option *ngFor="let recipe of recipes">
+        {{recipe}}
+    </mat-list-option>
+</mat-selection-list>
+

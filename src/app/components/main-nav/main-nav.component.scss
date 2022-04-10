@@ -1,0 +1,57 @@
+.sidenav-container {
+    height: 100%;
+}
+
+.sidenav {
+    width: 200px;
+    border: none;
+}
+
+.fixed-top{
+    position: fixed;
+}
+
+.mat-menu-item{
+    height: auto !important;
+}
+
+.mat-nav-list-vertical{
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
+}
+
+%item-focused{
+    background-color: #ff4081 !important;
+    font-weight: 500 !important;
+    color: #ffffff;
+}
+
+mat-nav-list a:nth-child(n+2):nth-last-child(n+2){
+    margin-top: 8px;
+}
+
+.mat-list-item:last-child{
+    margin-top: auto;
+    height: 64px !important;
+}
+
+.list-item-active{
+    @extend %item-focused;
+}
+
+mat-nav-list a:hover{
+    @extend %item-focused;
+    border-radius: 15px;
+    transition: all ease-in 0.5s;
+}
+
+.mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.toolbar-spacer{
+    flex: 1 1 auto;
+}
