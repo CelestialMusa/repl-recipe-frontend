@@ -6,9 +6,11 @@
     </mat-form-field>
 </div>
 
-<mat-selection-list [multiple]="false">
+<mat-selection-list *ngIf="recipes" [multiple]="false">
     <mat-list-option *ngFor="let recipe of recipes">
-        {{recipe}}
+        {{recipe.title}}
     </mat-list-option>
 </mat-selection-list>
+
+
 

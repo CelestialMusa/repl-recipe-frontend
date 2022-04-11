@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 //#region  Custom module imports
 import { MaterialModule } from './modules/material/material.module';
@@ -37,6 +38,7 @@ import { RecipeDetailsComponent } from './components/recipe-details/recipe-detai
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     MaterialModule,
     MatProgressButtonsModule,
   ],

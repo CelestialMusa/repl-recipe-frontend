@@ -26,9 +26,9 @@
         <mat-label>Difficulty level</mat-label>
         <mat-select formControlName="difficulty_level">
             <mat-option disabled>--None--</mat-option>
-            <mat-option value="Breakfast">Beginner</mat-option>
-            <mat-option value="Lunch">Intermidiate</mat-option>
-            <mat-option value="Supper">Advanced</mat-option>
+            <mat-option value="Beginner">Beginner</mat-option>
+            <mat-option value="Intermidiate">Intermidiate</mat-option>
+            <mat-option value="Advanced">Advanced</mat-option>
         </mat-select>
         <mat-error *ngIf="recipeForm.get('difficulty_level')?.touched && recipeForm.get('difficulty_level')?.invalid">
             We know to know how difficult it is to prepare your recipe.
@@ -45,7 +45,7 @@
     </mat-form-field>
     
     <!-- TODO! Type = Technical debt,
-        Task = Deeply nested form causes fields not to be discovered onInit, need to refactor ingriedients form group into a seperate component.
+        Task = Deeply nested form causes fields not to be discovered onInit, need to refactor ingredients form group into a seperate component.
         Temporary fix = Refresh page when loading the add recipe page.
         Reference = stackoverflow.com/questions/62352286/angular-deeply-nested-reactive-form-cannot-find-control-with-path-on-nested-for
     -->
@@ -54,10 +54,10 @@
         <div *ngFor="let ingriedientForm of ingriedients_form_arr.controls; let i=index">
             <div [formGroup]="$any(ingriedientForm)" class="col-12 d-flex justify-content-between">
                 <mat-form-field class="col-lg-6 col-md-5 col-sm-12 p-2" appearance="fill">
-                    <mat-label>Ingriedient {{i+1}}</mat-label>
+                    <mat-label>Ingredient {{i+1}}</mat-label>
                     <input matInput [formControl]="$any(ingriedientForm).controls?.name" placeholder="What is the name of this ingriedient?">
                     <mat-error *ngIf="$any(ingriedientForm).controls?.name?.touched && $any(ingriedientForm).controls?.name?.invalid">
-                        We need to know the name of this ingriedient.
+                        We need to know the name of this ingredient.
                     </mat-error>
                     <mat-icon color="accent" matSuffix>category</mat-icon>
                 </mat-form-field>
@@ -66,20 +66,20 @@
                     <mat-label>Amount</mat-label>
                     <input type="number" matInput formControlName="amount" placeholder="How much of this ingriedient do we need?">
                     <mat-error *ngIf="ingriedientForm.get('amount')?.touched && ingriedientForm.get('amount')?.invalid">
-                        We need to know how much of this ingriedient is required.
+                        We need to know how much of this ingredient is required.
                     </mat-error>
                     <mat-icon color="accent"matSuffix>scale</mat-icon>
                 </mat-form-field>
                 
                 <div *ngIf="i >= 1; else add" class="p-3">
-                    <button type="button" mat-icon-button (click)="removeIngriedient(i, $event)" matTooltip="Remove ingriedient">
+                    <button type="button" mat-icon-button (click)="removeIngriedient(i, $event)" matTooltip="Remove ingredient">
                         <mat-icon color="accent">delete</mat-icon>
                     </button>
                 </div>
                 
                 <ng-template #add>
                     <div class="p-3">
-                        <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingriedient">
+                        <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingredient">
                             <mat-icon color="accent">add_circle</mat-icon>
                         </button>
                     </div> 
@@ -88,7 +88,7 @@
         </div>
         <div *ngIf="$any(ingriedients_form_arr?.controls?.length) > 3" class="col-12 d-flex justify-content-end">
             <div class="p-3">
-                <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingriedient">
+                <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingredient">
                     <mat-icon color="accent">add_circle</mat-icon>
                 </button>
             </div>
@@ -101,7 +101,7 @@
             cdkAutosizeMinRows="5" cdkAutosizeMaxRows="25" maxlength="2000"
             placeholder="Please let us know the magic you work to prepare this recipe."></textarea>
         <mat-hint align="end">{{ description.value.length }} / 2000</mat-hint>
-        <mat-error *ngIf="recipeForm.get('instructions')?.invalid || recipeForm.get('instructions')?.touched">We need to know how to work with your ingriedients</mat-error>
+        <mat-error *ngIf="recipeForm.get('instructions')?.invalid || recipeForm.get('instructions')?.touched">We need to know how to work with your ingredients</mat-error>
     </mat-form-field>
 
     <div class="recipe-banner mt-3" [style.background-image]="getRecipeImage()">
@@ -117,7 +117,8 @@
         <button type="button" mat-icon-button matSuffix (click)="fileInput.click()">
             <mat-icon>attach_file</mat-icon>
         </button>
-        <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file">
+        <input hidden formControlName="recipe_image" (change)="onFileChanged($event)" #fileInput type="file" id="file">
+        <mat-error *ngIf="recipeForm.get('recipe_image')?.invalid || recipeForm.get('recipe_image')?.touched">We need to know what the end product looks like.</mat-error>
     </mat-form-field>
 
     <div class="col-12 d-flex justify-content-end">
