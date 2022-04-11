@@ -1,4 +1,4 @@
-FROM node-16.13.2-slim as builder
+FROM node:alpine as builder
 
 # build-time variables
 # prod|sandbox its value will be come from outside
