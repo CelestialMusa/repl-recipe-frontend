@@ -10,6 +10,7 @@ ARG env=prod
 # Move our files into directory name "app"
 WORKDIR /app
 COPY . .
+RUN cp ~/configs/environment* /app/src/environments
 
 RUN npm install
 
