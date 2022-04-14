@@ -1,0 +1,49 @@
+name: Build and deploy frontend Docker image to EC2 instance.
+
+on:
+  pull_request:
+    branches:
+      - release
+
+jobs:
+  Checkout:
+    name: Code Checkout
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+  Build:
+    name: Code Build
+    needs: Checkout
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      - name: Build frontend Docker image
+        run: docker build -t repl-recipe-frontend:latest .
+
+  Deploy:
+    name: Publish and deploy latest Code
+    needs: build
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      - name: Forcefully stop current running frontend container
+        run: docker rm -f frontend
+
+      - name: Run container from latest build image
+        run: docker run -d -p 80:80 repl-recipe-frontend
+
+  Teardown:
+    name: Remove unused docker image layers
+    runs-on: self-hosted
+    environment: production
+    if: always()
+
+    steps:
+      - name: Remove dangling docker images
+        run: docker rmi $(docker images | grep "none" | awk '{print $3}')
