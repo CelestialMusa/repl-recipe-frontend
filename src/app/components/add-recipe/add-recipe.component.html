@@ -44,57 +44,13 @@
         <mat-icon color="accent" matSuffix>tag</mat-icon>
     </mat-form-field>
     
-    <!-- TODO! Type = Technical debt,
-        Task = Deeply nested form causes fields not to be discovered onInit, need to refactor ingredients form group into a seperate component.
-        Temporary fix = Refresh page when loading the add recipe page.
-        Reference = stackoverflow.com/questions/62352286/angular-deeply-nested-reactive-form-cannot-find-control-with-path-on-nested-for
+    <ng-container *ngTemplateOutlet="ingredientsFormContainer"></ng-container>
+
+    <!--
+        !TODO: Type = Enhancement
+        *Task = Convert this into a rich text editor using some sort of WYSIWYG angular compatible editor.
+        ? Prospective candidate = https://github.com/mdefy/ngx-markdown-editor
     -->
-
-    <div class="col-12" formArrayName="ingriedients_form_arr">
-        <div *ngFor="let ingriedientForm of ingriedients_form_arr.controls; let i=index">
-            <div [formGroup]="$any(ingriedientForm)" class="col-12 d-flex justify-content-between">
-                <mat-form-field class="col-lg-6 col-md-5 col-sm-12 p-2" appearance="fill">
-                    <mat-label>Ingredient {{i+1}}</mat-label>
-                    <input matInput [formControl]="$any(ingriedientForm).controls?.name" placeholder="What is the name of this ingriedient?">
-                    <mat-error *ngIf="$any(ingriedientForm).controls?.name?.touched && $any(ingriedientForm).controls?.name?.invalid">
-                        We need to know the name of this ingredient.
-                    </mat-error>
-                    <mat-icon color="accent" matSuffix>category</mat-icon>
-                </mat-form-field>
-                
-                <mat-form-field class="col-lg-5 col-md-5 col-sm-12 p-2" appearance="fill">
-                    <mat-label>Amount</mat-label>
-                    <input type="number" matInput formControlName="amount" placeholder="How much of this ingriedient do we need?">
-                    <mat-error *ngIf="ingriedientForm.get('amount')?.touched && ingriedientForm.get('amount')?.invalid">
-                        We need to know how much of this ingredient is required.
-                    </mat-error>
-                    <mat-icon color="accent"matSuffix>scale</mat-icon>
-                </mat-form-field>
-                
-                <div *ngIf="i >= 1; else add" class="p-3">
-                    <button type="button" mat-icon-button (click)="removeIngriedient(i, $event)" matTooltip="Remove ingredient">
-                        <mat-icon color="accent">delete</mat-icon>
-                    </button>
-                </div>
-                
-                <ng-template #add>
-                    <div class="p-3">
-                        <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingredient">
-                            <mat-icon color="accent">add_circle</mat-icon>
-                        </button>
-                    </div> 
-                </ng-template>
-            </div>
-        </div>
-        <div *ngIf="$any(ingriedients_form_arr?.controls?.length) > 3" class="col-12 d-flex justify-content-end">
-            <div class="p-3">
-                <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingredient">
-                    <mat-icon color="accent">add_circle</mat-icon>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <mat-form-field appearance="fill" class="col-12">
         <mat-label>Preparation instructions</mat-label>
         <textarea (resize)="true" matInput formControlName="instructions" #description cdkTextareaAutosize
@@ -125,3 +81,56 @@
         <mat-bar-button (click)="onSubmit()" [options]="btnOptions"></mat-bar-button>
     </div>
 </form>
+
+
+<ng-template #ingredientsFormContainer>
+    <!-- TODO! Type = Technical debt,
+    !    Task = Deeply nested form causes fields not to be discovered onInit, need to refactor ingredients form group into a seperate component.
+    *    Temporary fix = Refactor this code into a seperate template, seems to have the same effect as using a standalone component (I really just thumb sucked this one and it worked, might not be best practices - hope whoever's reviewing my code from REPL won't hammer me down for this. :)
+    ?    Reference = stackoverflow.com/questions/62352286/angular-deeply-nested-reactive-form-cannot-find-control-with-path-on-nested-for
+    !-->
+
+    <div *ngFor="let ingriedientForm of ingriedients_form_arr.controls; let i=index">
+        <div [formGroup]="$any(ingriedientForm)" class="col-12 d-flex justify-content-between">
+            <mat-form-field class="col-lg-6 col-md-5 col-sm-12 p-2" appearance="fill">
+                <mat-label>Ingredient {{i+1}}</mat-label>
+                <input matInput [formControl]="$any(ingriedientForm).controls?.name" placeholder="What is the name of this ingriedient?">
+                <mat-error *ngIf="$any(ingriedientForm).controls?.name?.touched && $any(ingriedientForm).controls?.name?.invalid">
+                    We need to know the name of this ingredient.
+                </mat-error>
+                <mat-icon color="accent" matSuffix>category</mat-icon>
+            </mat-form-field>
+            
+            <mat-form-field class="col-lg-5 col-md-5 col-sm-12 p-2" appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input type="number" matInput formControlName="amount" placeholder="How much of this ingriedient do we need?">
+                <mat-error *ngIf="ingriedientForm.get('amount')?.touched && ingriedientForm.get('amount')?.invalid">
+                    We need to know how much of this ingredient is required.
+                </mat-error>
+                <mat-icon color="accent"matSuffix>scale</mat-icon>
+            </mat-form-field>
+            
+            <div *ngIf="i >= 1; else add" class="p-3">
+                <button type="button" mat-icon-button (click)="removeIngriedient(i, $event)" matTooltip="Remove ingredient">
+                    <mat-icon color="accent">delete</mat-icon>
+                </button>
+            </div>
+            
+            <ng-template #add>
+                <div class="p-3">
+                    <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingredient">
+                        <mat-icon color="accent">add_circle</mat-icon>
+                    </button>
+                </div> 
+            </ng-template>
+        </div>     
+    </div>
+    
+    <div *ngIf="$any(ingriedients_form_arr?.controls?.length) > 3" class="col-12 d-flex justify-content-end">
+        <div class="p-3">
+            <button type="button" mat-icon-button (click)="addIngriedient($event)" matTooltip="Add new ingredient">
+                <mat-icon color="accent">add_circle</mat-icon>
+            </button>
+        </div>
+    </div>
+</ng-template>
